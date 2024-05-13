@@ -32,6 +32,11 @@ class RedisClient {
     await this.client.expire(key, time);
   }
 
+  // Defining a method to check the status
+  checkStatus() {
+    return this.isAlive(); // Assuming isAlive checks the status of the DB
+  }
+
   // del key value pair from redis server
   async del(key) {
     const delCommand = promisify(this.client.del).bind(this.client);

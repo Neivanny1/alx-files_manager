@@ -40,6 +40,11 @@ class DBClient {
     return numberOfUsers;
   }
 
+  // Defining a method to check the status
+  checkStatus() {
+    return this.isAlive(); // Assuming isAlive checks the status of the DB
+  }
+
   /**
    * Returns the number of documents in the collection files
    * @return {number} amount of files
