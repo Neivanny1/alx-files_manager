@@ -1,12 +1,13 @@
 const express = require('express');
-const allRoutes = require('./routes/index');
+const routes = require('./routes');
+
+const PORT = process.env.PORT || 5000;
 
 const app = express();
-const port = process.env.PORT || 5000;
 
-app.use(express.json());
-// sets all the routes created in routes/index
-app.use('/', allRoutes);
+// Load routes from routes/index.js
+app.use('/', routes);
 
-app.listen(port);
-module.exports = app;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

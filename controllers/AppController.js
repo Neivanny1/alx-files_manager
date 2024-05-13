@@ -1,17 +1,27 @@
-import dbClient from '../utils/db';
-import redisClient from '../utils/redis';
+// Assuming you have utilities to check Redis and DB status
+const redisUtil = require('../utils/redis');
+const dbUtil = require('../utils/redis');
 
-class AppController {
-  static getStatus(request, response) {
-    const redisstatus = redisClient.isAlive();
-    const dbstatus = dbClient.isAlive();
-    response.status(200).send({ redis: redisstatus, db: dbstatus });
-  }
+// Dummy data for testing
+const users = [{ name: 'User1' }, { name: 'User2' }, { name: 'User3' }, { name: 'User4' }];
+const files = [{ name: 'File1' }, { name: 'File2' }, { name: 'File3' }, { name: 'File4' }, { name: 'File5' }];
 
-  static async getStats(request, response) {
-    const userdocumentsnum = await dbClient.nbUsers();
-    const filesdocumentsnum = await dbClient.nbFiles();
-    response.status(200).send({ users: userdocumentsnum, files: filesdocumentsnum });
-  }
-}
-module.exports = AppController;
+module.exports = {
+  getStatus: (req, res) => {
+    // Check Redis and DB status
+    const redisStatus = redisUtil.checkStatus(); // Assuming it returns true/false
+    const dbStatus = dbUtil.checkStatus(); // Assuming it returns true/false
+
+    // Respond with status
+    res.status(200).json({ redis: redisStatus, db: dbStatus });
+  },
+
+  getStats: (req, res) => {
+    // Count users and files
+    const userCount = users.length;
+    const fileCount = files.length;
+
+    // Respond with stats
+    res.status(200).json({ users: userCount, files: fileCount });
+  },
+};
