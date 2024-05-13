@@ -4,10 +4,7 @@ import { ObjectID } from 'mongodb';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
-
 const userQueue = new Queue('email sending');
-
-
 class UsersController {
   static async postNew(request, response) {
     const { email, password } = request.body;
@@ -29,7 +26,7 @@ class UsersController {
     const shaHashedPw = sha1(password);
     const inserted = await usersCollection.insertOne({ email, password: shaHashedPw });
     const userId = inserted.insertedId;
-    userQueue.add({ userId })
+    userQueue.add({ userId });
     response.status(201).json({ id: userId, email });
   }
 
