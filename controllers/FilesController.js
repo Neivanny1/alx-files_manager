@@ -7,7 +7,7 @@ import redisClient from '../utils/redis';
 const FOLDER_PATH = process.env.FOLDER_PATH || '/tmp/files_manager';
 
 class FilesController {
-    static async postUpload (req, res) {
+  static async postUpload(req, res) {
     const token = req.header('X-Token');
     const userId = await redisClient.get(`auth_${token}`);
 
@@ -17,7 +17,9 @@ class FilesController {
     }
 
     // Destructure request body
-    const { name, type, parentId = '0', isPublic = false, data } = req.body;
+    const {
+      name, type, parentId = '0', isPublic = false, data,
+    } = req.body;
 
     // Validate required fields
     if (!name) {
@@ -59,13 +61,15 @@ class FilesController {
       type,
       parentId,
       isPublic,
-      localPath
+      localPath,
     };
     const result = await filesCollection.insertOne(newFile);
     const fileId = result.insertedId;
 
     // Return the new file
     res.status(201).json({ id: fileId, ...newFile });
+    // Default return statement
+    return null;
   }
 }
 
