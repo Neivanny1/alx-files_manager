@@ -1,19 +1,17 @@
-/* eslint-disable import/no-named-as-default */
-import redisClient from '../utils/redis';
 import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
 
-export default class AppController {
-  static getStatus(req, res) {
-    res.status(200).json({
-      redis: redisClient.isAlive(),
-      db: dbClient.isAlive(),
-    });
+class AppController {
+  static getStatus(request, response) {
+    const redisstatus = redisClient.isAlive();
+    const dbstatus = dbClient.isAlive();
+    response.status(200).send({ redis: redisstatus, db: dbstatus });
   }
 
-  static getStats(req, res) {
-    Promise.all([dbClient.nbUsers(), dbClient.nbFiles()])
-      .then(([usersCount, filesCount]) => {
-        res.status(200).json({ users: usersCount, files: filesCount });
-      });
+  static async getStats(request, response) {
+    const userdocumentsnum = await dbClient.nbUsers();
+    const filesdocumentsnum = await dbClient.nbFiles();
+    response.status(200).send({ users: userdocumentsnum, files: filesdocumentsnum });
   }
 }
+module.exports = AppController;
