@@ -1,10 +1,12 @@
 import sha1 from 'sha1';
-import Queue from 'bull/lib/queue';
+import Queue from 'bull/lib/queue'; // Import Queue class
 import { ObjectID } from 'mongodb';
 import dbClient from '../utils/db';
 import redisClient from '../utils/redis';
 
+// Define userQueue and create a new instance of Queue
 const userQueue = new Queue('email sending');
+
 class UsersController {
   static async postNew(request, response) {
     const { email, password } = request.body;
